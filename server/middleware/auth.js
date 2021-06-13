@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
 
             req.userId = decodedData?.id;
         } else { // for Google authorization
-            decodedData = jwt.decode();
+            decodedData = jwt.decode(token);
 
             req.userId = decodedData?.sub;
         }

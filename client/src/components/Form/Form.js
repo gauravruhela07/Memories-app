@@ -7,12 +7,7 @@ import { createPosts, updatePost } from '../../actions/posts';
 import useStyles from './styles.js'
 
 const Form = ({currentId, setCurrentId}) => {
-    const [postData, setPostData] = useState({
-        title: '',
-        message: '',
-        tags: '',
-        selectedFile: '',
-    });
+    const [postData, setPostData] = useState({ title: '', message: '', tags: '', selectedFile: ''});
     const post = useSelector((state) => (currentId ? state.posts.find((p) => p._id === currentId) : null)); 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -25,7 +20,7 @@ const Form = ({currentId, setCurrentId}) => {
     const handleSubmit = (e) => {
         e.preventDefault(); 
 
-        if(currentId === 0) {
+        if(currentId===0) {
             dispatch(createPosts({ ...postData, name: user?.result?.name}));
         } else {
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
@@ -34,13 +29,8 @@ const Form = ({currentId, setCurrentId}) => {
     };
 
     const clear = () => {
-        setCurrentId(null);
-        setPostData({
-            title: '',
-            message: '',
-            tags: '',
-            selectedFile: '',
-        });
+        setCurrentId(0);
+        setPostData({ title: '', message: '', tags: '', selectedFile: '' });
     };
 
     if(!user?.result?.name) {
@@ -56,7 +46,7 @@ const Form = ({currentId, setCurrentId}) => {
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit} >
-                <Typography variant="h6">{currentId ? 'Editing': 'Creating a Memory'}</Typography>
+                <Typography variant="h6">{currentId ? `Editing '${post.title}'`: 'Creating a Memory'}</Typography>
                 <TextField 
                     name="title" variant="outlined" 
                     label="Title" 
@@ -67,7 +57,7 @@ const Form = ({currentId, setCurrentId}) => {
                 <TextField 
                     name="message" variant="outlined" 
                     label="Message" 
-                    fullWidth 
+                    fullWidth multiline rows={4}
                     value={postData.message}
                     onChange={(e) => setPostData({...postData, message: e.target.value})}
                     />
